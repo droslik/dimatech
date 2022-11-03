@@ -1,0 +1,24 @@
+version: '3.3'
+
+services:
+  postgres:
+    container_name: dimatech_postgres
+    restart: always
+    image: postgres:latest
+    volumes:
+      - /var/lib/postgresql/sanic/_data/
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    restart: on-failure
+    volumes:
+      - .:/app
+    depends_on:
+      - postgres
+
